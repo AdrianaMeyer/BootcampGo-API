@@ -18,7 +18,7 @@ type Product struct {
 var products []Product
 var lastID int
 
-type Repository interface {
+type IRepository interface {
 	GetAll() ([]Product, error)
 	Save(id int, name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
 	LastID() (int, error)
@@ -26,7 +26,7 @@ type Repository interface {
 
 type repository struct {}
 
-func NewRepository() Repository {
+func NewRepository() IRepository {
 	return &repository{}
 }
 
