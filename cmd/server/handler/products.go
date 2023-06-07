@@ -81,7 +81,7 @@ func (c *Product) Save() gin.HandlerFunc {
 			return	
 		}
 
-		ctx.JSON(http.StatusOK, product)
+		ctx.JSON(http.StatusCreated, product)
 
 	}
 }
