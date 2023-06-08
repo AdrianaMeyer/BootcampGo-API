@@ -59,6 +59,7 @@ func (r *repository) Update(id int, name string, color string, price float64, co
 	for i := range products {
 		if products[i].ID == id {
 			p.ID = id
+			p.Date = products[i].Date
 			products[i] = p
 			updated = true
 		}

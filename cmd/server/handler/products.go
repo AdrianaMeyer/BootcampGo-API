@@ -113,7 +113,7 @@ func (c *Product) Update() gin.HandlerFunc {
 			return
 		}
 		if req.Color == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{ "Error": "O campo cor do produto é obrigatória"})
+			ctx.JSON(http.StatusBadRequest, gin.H{ "Error": "O campo cor do produto é obrigatório"})
 			return
 		}
 		if req.Price == 0 {
@@ -126,10 +126,6 @@ func (c *Product) Update() gin.HandlerFunc {
 		}
 		if req.Code == "" {
 			ctx.JSON(http.StatusBadRequest, gin.H{ "Error": "O campo código do produto é obrigatório"})
-			return
-		}
-		if  strconv.FormatBool(req.Published) == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{ "Error": "O campo de publicação é obrigatório"})
 			return
 		}
 
