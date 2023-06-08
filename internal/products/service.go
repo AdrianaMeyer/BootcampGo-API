@@ -7,6 +7,7 @@ import (
 type IService interface {
 	GetAll() ([]Product, error)
 	Save(name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
+	Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error)
 }
 
 type service struct {
@@ -43,5 +44,11 @@ func (s *service) Save(name string, color string, price float64, count int, code
 	}
 
 	return product, nil
+
+}
+
+func (s *service) Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error) {
+
+	return s.repository.Update(id, name, color, price, count, code, published)
 
 }

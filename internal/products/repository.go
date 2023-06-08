@@ -2,6 +2,7 @@ package products
 
 import (
 	"time"
+	"fmt"
 )
 
 type Product struct {
@@ -22,6 +23,7 @@ type IRepository interface {
 	GetAll() ([]Product, error)
 	Save(id int, name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
 	LastID() (int, error)
+	Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error)
 }
 
 type repository struct {}
@@ -45,6 +47,25 @@ func (r *repository) Save(id int, name string, color string, price float64, coun
 	p := Product{id, name, color, price, count, code, published, date}
 	products = append(products, p)
 	lastID = p.ID
+	return p, nil
+
+}
+
+func (r *repository) Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error) {
+
+	p := Product{Name: name, Color: color, Price: price, Count: count, Code: code, Published: published}
+	updated := false
+
+	for i := range products {
+		if products[i].ID == id {
+			p.ID = id
+			products[i] = p
+			updated = true
+		}
+	}
+	if !updated {
+		return Product{}, fmt.Errorf("Produto %d não encontrado", id)
+	}
 	return p, nil
 
 }
