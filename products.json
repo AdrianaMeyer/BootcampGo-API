@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Estojo",
+    "color": "Preto",
+    "price": 30.9,
+    "count": 40,
+    "code": "CCC6543",
+    "published": true,
+    "date": "2023-06-08T23:27:08.492102-03:00"
+  },
+  {
+    "id": 2,
+    "name": "Celular",
+    "color": "Azul",
+    "price": 2500.9,
+    "count": 40,
+    "code": "CCC6542",
+    "published": true,
+    "date": "2023-06-08T23:30:12.859257-03:00"
+  }
+]

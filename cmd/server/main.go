@@ -1,12 +1,13 @@
 package main
 
 import (
+	"log"
+
 	"github.com/AdrianaMeyer/BootcampGo-API/cmd/server/handler"
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
+	"github.com/AdrianaMeyer/BootcampGo-API/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"log"
-	"os"
 )
 
 func main() {
@@ -15,7 +16,12 @@ func main() {
 	  log.Fatal("Erro ao carregar o arquivo .env")
 	}
 
-	repo := products.NewRepository()
+	store := store.Factory("file", "../../products.json")
+	if store == nil {
+		log.Fatal("Não foi possível criar a Store")
+	}
+
+	repo := products.NewRepository(store)
 	service := products.NewService(repo)
 	product := handler.NewProduct(service)
 

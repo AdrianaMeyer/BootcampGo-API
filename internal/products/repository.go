@@ -3,6 +3,8 @@ package products
 import (
 	"time"
 	"fmt"
+
+	"github.com/AdrianaMeyer/BootcampGo-API/pkg/store"
 )
 
 type Product struct {
@@ -28,10 +30,14 @@ type IRepository interface {
 	Delete(id int) error
 }
 
-type repository struct {}
+type repository struct {
+	db store.Store
+}
 
-func NewRepository() IRepository {
-	return &repository{}
+func NewRepository(db store.Store) IRepository {
+	return &repository{
+		db: db,
+	}
 }
 
 func (r *repository) GetAll() ([]Product, error) {
@@ -46,8 +52,17 @@ func (r *repository) LastID() (int, error) {
 
 func (r *repository) Save(id int, name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error) {
 	
+	var products []Product
+	r.db.Read(&products)
+
 	p := Product{id, name, color, price, count, code, published, date}
 	products = append(products, p)
+
+	err := r.db.Write(products)
+	if err != nil {
+		return Product{}, err
+	}
+
 	lastID = p.ID
 	return p, nil
 
