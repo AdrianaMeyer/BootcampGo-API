@@ -5,6 +5,7 @@ import (
 	"time"
 	"strconv"
 	"fmt"
+	"os"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	"github.com/gin-gonic/gin"
@@ -34,7 +35,7 @@ func NewProduct(p products.IService) *Product {
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN"){
 			ctx.JSON(http.StatusUnauthorized, gin.H{
 				"Error": "Token Inválido",
 			})
@@ -57,7 +58,7 @@ func (c *Product) GetAll() gin.HandlerFunc {
 func (c *Product) Save() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{
 				"Error": "Token Inválido",
 			})
@@ -91,7 +92,7 @@ func (c *Product) Save() gin.HandlerFunc {
 func (c *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{ "Error": "Token inválido" })
 			return
 		}
@@ -142,7 +143,7 @@ func (c *Product) Update() gin.HandlerFunc {
  func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN") {
 			ctx.JSON(http.StatusUnauthorized, gin.H{ "Error": "Token inválido" })
 			return
 		}
@@ -181,7 +182,7 @@ func (c *Product) Update() gin.HandlerFunc {
  func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
-		if token != "123456" {
+		if token != os.Getenv("TOKEN"){
 			ctx.JSON(401, gin.H{ "Error": "Token inválido" })
 			return
 		}

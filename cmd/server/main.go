@@ -4,9 +4,17 @@ import (
 	"github.com/AdrianaMeyer/BootcampGo-API/cmd/server/handler"
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
 )
 
 func main() {
+	err := godotenv.Load("../../.env")
+	if err != nil {
+	  log.Fatal("Erro ao carregar o arquivo .env")
+	}
+
 	repo := products.NewRepository()
 	service := products.NewService(repo)
 	product := handler.NewProduct(service)
