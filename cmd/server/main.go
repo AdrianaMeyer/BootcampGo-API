@@ -16,6 +16,7 @@ func main() {
 	pr.POST("/", product.Save())
 	pr.GET("/", product.GetAll())
 	pr.PUT("/:id", product.Update())
+	pr.PATCH("/:id", product.UpdateNameAndPrice())
 
 	router.Run()
 }

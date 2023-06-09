@@ -137,3 +137,43 @@ func (c *Product) Update() gin.HandlerFunc {
 		ctx.JSON(http.StatusOK, p)
  }}
  
+
+ func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.GetHeader("token")
+		if token != "123456" {
+			ctx.JSON(http.StatusUnauthorized, gin.H{ "Error": "Token inválido" })
+			return
+		}
+		id, err := strconv.ParseInt(ctx.Param("id"),10, 64)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{ "Error": "ID inválido"})
+			return
+		}
+
+		var req request
+		err = ctx.ShouldBindJSON(&req)
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{ "Error": err.Error() })
+			return
+		}
+
+		if req.Name == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{ "Error": "O nome do produto é obrigatório"})
+			return
+		}
+
+		if req.Price == 0 {
+			ctx.JSON(http.StatusBadRequest, gin.H{ "Error": "O preço do produto é obrigatório"})
+			return
+		}
+
+		p, err := c.service.UpdateNameAndPrice(int(id), req.Name, req.Price)
+		if err != nil {
+			ctx.JSON(http.StatusNotFound, gin.H{ "Error": err.Error() })
+			return
+		}
+		ctx.JSON(http.StatusOK, p)
+ }}
+ 

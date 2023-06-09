@@ -24,6 +24,7 @@ type IRepository interface {
 	Save(id int, name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
 	LastID() (int, error)
 	Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error)
+	UpdateNameAndPrice(id int, name string, price float64) (Product, error)
 }
 
 type repository struct {}
@@ -70,3 +71,21 @@ func (r *repository) Update(id int, name string, color string, price float64, co
 	return p, nil
 
 }
+
+func (r *repository) UpdateNameAndPrice(id int, name string, price float64) (Product, error) {
+	var p Product
+	updated := false
+	for i := range products {
+		if products[i].ID == id {
+			products[i].Name = name
+			products[i].Price = price
+			updated = true
+			p = products[i]
+		}
+	}
+	if !updated {
+		return Product{}, fmt.Errorf("Produto %d no encontrado", id)
+	}
+	return p, nil
+ }
+ 

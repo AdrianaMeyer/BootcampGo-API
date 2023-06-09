@@ -8,6 +8,7 @@ type IService interface {
 	GetAll() ([]Product, error)
 	Save(name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
 	Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error)
+	UpdateNameAndPrice(id int, name string, price float64) (Product, error)
 }
 
 type service struct {
@@ -52,3 +53,10 @@ func (s *service) Update(id int, name string, color string, price float64, count
 	return s.repository.Update(id, name, color, price, count, code, published)
 
 }
+
+func (s *service) UpdateNameAndPrice(id int, name string, price float64) (Product, error) {
+	
+	return s.repository.UpdateNameAndPrice(id, name, price)
+
+ }
+ 
