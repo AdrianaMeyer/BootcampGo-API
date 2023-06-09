@@ -9,6 +9,7 @@ type IService interface {
 	Save(name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
 	Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error)
 	UpdateNameAndPrice(id int, name string, price float64) (Product, error)
+	Delete(id int) error
 }
 
 type service struct {
@@ -60,3 +61,8 @@ func (s *service) UpdateNameAndPrice(id int, name string, price float64) (Produc
 
  }
  
+func (s *service) Delete(id int) error {
+	
+	return s.repository.Delete(id)
+
+}

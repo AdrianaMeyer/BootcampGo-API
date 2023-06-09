@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 	"strconv"
+	"fmt"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	"github.com/gin-gonic/gin"
@@ -176,4 +177,27 @@ func (c *Product) Update() gin.HandlerFunc {
 		}
 		ctx.JSON(http.StatusOK, p)
  }}
+ 
+ func (c *Product) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.GetHeader("token")
+		if token != "123456" {
+			ctx.JSON(401, gin.H{ "Error": "Token inválido" })
+			return
+		}
+
+		id, err := strconv.ParseInt(ctx.Param("id"),10, 64)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{ "Error":  "ID inválido"})
+			return
+		}
+
+		err = c.service.Delete(int(id))
+		if err != nil {
+			ctx.JSON(http.StatusNotFound, gin.H{ "error": err.Error() })
+			return
+		}
+		ctx.JSON(http.StatusNoContent, gin.H{ "Sucesso!": fmt.Sprintf("O produto %d foi removido", id) })
+	}
+ }
  

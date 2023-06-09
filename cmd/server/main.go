@@ -17,6 +17,7 @@ func main() {
 	pr.GET("/", product.GetAll())
 	pr.PUT("/:id", product.Update())
 	pr.PATCH("/:id", product.UpdateNameAndPrice())
+	pr.DELETE("/:id", product.Delete())
 
 	router.Run()
 }
