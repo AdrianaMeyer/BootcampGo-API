@@ -19,7 +19,6 @@ type Product struct {
 }
 
 var products []Product
-var lastID int
 
 type IRepository interface {
 	GetAll() ([]Product, error)
@@ -41,12 +40,31 @@ func NewRepository(db store.Store) IRepository {
 }
 
 func (r *repository) GetAll() ([]Product, error) {
-	return products, nil
+	var products []Product
+
+   	err := r.db.Read(&products)
+	if err != nil {
+		return nil, err
+	 }
+
+   	return products, nil
 
 }
 
 func (r *repository) LastID() (int, error) {
-	return lastID, nil
+	var products []Product
+
+	err := r.db.Read(&products); 
+	if err != nil {
+       return 0, err
+	}
+
+	if len(products) == 0 {
+		return 0, nil
+	}
+
+	lastProduct := products[len(products)-1]
+	return lastProduct.ID, nil
 
 }
 
@@ -63,7 +81,6 @@ func (r *repository) Save(id int, name string, color string, price float64, coun
 		return Product{}, err
 	}
 
-	lastID = p.ID
 	return p, nil
 
 }

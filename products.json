@@ -18,5 +18,25 @@
     "code": "CCC6542",
     "published": true,
     "date": "2023-06-08T23:30:12.859257-03:00"
+  },
+  {
+    "id": 3,
+    "name": "Cafeteira",
+    "color": "Amarela",
+    "price": 359.9,
+    "count": 20,
+    "code": "CCC6540",
+    "published": true,
+    "date": "2023-06-08T23:46:22.473059-03:00"
+  },
+  {
+    "id": 4,
+    "name": "Chinelo",
+    "color": "Branco",
+    "price": 45,
+    "count": 200,
+    "code": "CCC6548",
+    "published": true,
+    "date": "2023-06-08T23:56:30.188387-03:00"
   }
 ]
