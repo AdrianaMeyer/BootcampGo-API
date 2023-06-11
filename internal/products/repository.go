@@ -18,8 +18,6 @@ type Product struct {
 	Date 		time.Time 	`json:"date"`
 }
 
-var products []Product
-
 type IRepository interface {
 	GetAll() ([]Product, error)
 	Save(id int, name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
@@ -87,6 +85,9 @@ func (r *repository) Save(id int, name string, color string, price float64, coun
 
 func (r *repository) Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error) {
 
+	var products []Product
+	r.db.Read(&products)
+
 	p := Product{Name: name, Color: color, Price: price, Count: count, Code: code, Published: published}
 	updated := false
 
@@ -95,23 +96,40 @@ func (r *repository) Update(id int, name string, color string, price float64, co
 			p.ID = id
 			p.Date = products[i].Date
 			products[i] = p
+
+			err := r.db.Write(products)
+			if err != nil {
+			return Product{}, err
+			}
+
 			updated = true
 		}
 	}
+	
 	if !updated {
 		return Product{}, fmt.Errorf("Produto %d não encontrado", id)
 	}
+
 	return p, nil
 
 }
 
 func (r *repository) UpdateNameAndPrice(id int, name string, price float64) (Product, error) {
+	var products []Product
+	r.db.Read(&products)
+
 	var p Product
 	updated := false
 	for i := range products {
 		if products[i].ID == id {
 			products[i].Name = name
 			products[i].Price = price
+
+			err := r.db.Write(products)
+			if err != nil {
+			return Product{}, err
+			}
+
 			updated = true
 			p = products[i]
 		}
@@ -124,19 +142,29 @@ func (r *repository) UpdateNameAndPrice(id int, name string, price float64) (Pro
  
 
  func (r *repository) Delete(id int) error {
+	var products []Product
+	r.db.Read(&products)
+
 	deleted := false
 	var index int
 	for i := range products {
 		if products[i].ID == id {
 			index = i
+			products = append(products[:index], products[index+1:]...)
+			
+			err := r.db.Write(products)
+			if err != nil {
+			return err
+			}
+
 			deleted = true
 		}
 	}
+	
 	if !deleted {
 		return fmt.Errorf("Produto %d nao encontrado", id)
 	}
 	
-	products = append(products[:index], products[index+1:]...)
 	return nil
  }
  

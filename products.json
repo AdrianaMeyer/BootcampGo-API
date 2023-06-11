@@ -21,11 +21,11 @@
   },
   {
     "id": 3,
-    "name": "Cafeteira",
-    "color": "Amarela",
-    "price": 359.9,
-    "count": 20,
-    "code": "CCC6540",
+    "name": "Calca",
+    "color": "Cinza",
+    "price": 78,
+    "count": 230,
+    "code": "BBB4024",
     "published": true,
     "date": "2023-06-08T23:46:22.473059-03:00"
   },
@@ -38,5 +38,15 @@
     "code": "CCC6548",
     "published": true,
     "date": "2023-06-08T23:56:30.188387-03:00"
+  },
+  {
+    "id": 5,
+    "name": "Carro",
+    "color": "Prata",
+    "price": 56000,
+    "count": 5,
+    "code": "CCC7654",
+    "published": true,
+    "date": "2023-06-11T19:46:40.599793-03:00"
   }
 ]
