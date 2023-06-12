@@ -33,6 +33,15 @@ func NewProduct(p products.IService) *Product {
 	}
 }
 
+// ListProducts godoc
+// @Summary List products
+// @Tags Products
+// @Description get products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /products [get]
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
@@ -52,6 +61,17 @@ func (c *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
+// Método Save
+// SaveProducts godoc
+// @Summary Save products
+// @Tags Products
+// @Description save products
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param product body request true "Product to save"
+// @Success 200 {object} web.Response
+// @Router /products [post]
 func (c *Product) Save() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
@@ -87,6 +107,18 @@ func (c *Product) Save() gin.HandlerFunc {
 	}
 }
 
+
+// Método Update
+// UpdateProducts godoc
+// @Summary Update product 
+// @Tags Products
+// @Description Updates products based on id 
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param product body request true "Product to update"
+// @Success 200 {object} web.Response
+// @Router /products/:id [put]
 func (c *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
@@ -124,8 +156,18 @@ func (c *Product) Update() gin.HandlerFunc {
 		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, p, ""))
  }}
  
-
- func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
+// Método UpdateNameAndPrice
+// UpdateProducts godoc
+// @Summary Update Name and Price of a product 
+// @Tags Products
+// @Description Update Name and Price of a product based on id 
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Param product body request true "Product name and price to update"
+// @Success 200 {object} web.Response
+// @Router /products/:id [patch]
+func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
 		if token != os.Getenv("TOKEN") {
@@ -161,9 +203,19 @@ func (c *Product) Update() gin.HandlerFunc {
 			return
 		}
 		ctx.JSON(http.StatusOK, p)
- }}
+}}
  
- func (c *Product) Delete() gin.HandlerFunc {
+
+// Método Delete
+// DeleteProducts godoc
+// @Summary Delete a product
+// @Tags Products
+// @Description Delete a products based on id 
+// @Accept  json
+// @Produce  json
+// @Param token header string true "token"
+// @Router /products/:id [delete]
+func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.GetHeader("token")
 		if token != os.Getenv("TOKEN"){
@@ -184,9 +236,9 @@ func (c *Product) Update() gin.HandlerFunc {
 		}
 		ctx.JSON(http.StatusNoContent, gin.H{ "Sucesso!": fmt.Sprintf("O produto %d foi removido", id) })
 	}
- }
+}
  
- func validateFields(req request) []string {
+func validateFields(req request) []string {
 
 	emptyfields := []string{}
 
@@ -216,4 +268,4 @@ func (c *Product) Update() gin.HandlerFunc {
 		return nil
 	}
 
- }
+}
