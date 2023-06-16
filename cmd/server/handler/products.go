@@ -18,7 +18,6 @@ type request struct {
 	Count 		int 		`json:"count"`
 	Code 		string 		`json:"code"`
 	Published 	bool 		`json:"published"`
-	Date 		time.Time 	`json:"date"`
 }
 
 type Product struct {
