@@ -32,15 +32,16 @@ func NewProduct(p products.IService) *Product {
 	}
 }
 
-// ListProducts godoc
-// @Summary List products
+// GetAll godoc
+// @Summary List all products
+// @Description getAll products
 // @Tags Products
-// @Description get products
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
 // @Success 200 {object} web.Response
-// @Router /products [get]
+// @Failure 204 {object} web.Response "Não há produtos cadastrados"
+// @Router /products/ [get]
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		product, err := c.service.GetAll()
@@ -54,17 +55,19 @@ func (c *Product) GetAll() gin.HandlerFunc {
 	}
 }
 
-// Método Save
-// SaveProducts godoc
-// @Summary Save products
+// Save godoc
+// @Summary Save new products
+// @Description Create a new product based on the provided JSON
 // @Tags Products
-// @Description save products
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
-// @Param product body request true "Product to save"
-// @Success 200 {object} web.Response
-// @Router /products [post]
+// @Param product body request true "Product to be saves"
+// @Success 201 {object} web.Response "Created product"
+// @Failure 400 {object} web.Response "Missing fields error"
+// @Failure 422 {object} web.Response "Json Parse error"
+// @Failure 500 {object} web.Response "Internal Server error"
+// @Router /products/ [post]
 func (c *Product) Save() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -90,23 +93,25 @@ func (c *Product) Save() gin.HandlerFunc {
 			return	
 		}
 
-		ctx.JSON(http.StatusCreated, product)
+		ctx.JSON(http.StatusCreated, web.NewResponse(http.StatusCreated, product, ""))
 
 	}
 }
 
-
-// Método Update
-// UpdateProducts godoc
-// @Summary Update product 
+// Update godoc
+// @Summary Update a product based on ID
+// @Description Update a specific product based on the provided JSON
 // @Tags Products
-// @Description Updates products based on id 
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
-// @Param product body request true "Product to update"
-// @Success 200 {object} web.Response
-// @Router /products/:id [put]
+// @Param product body request true "Product to be updated"
+// @Param id path int true "Product ID"
+// @Success 200 {object} web.Response "Product Updated"
+// @Failure 400 {object} web.Response  "ID validation error or missing fields"
+// @Failure 404 {object} web.Response  "Product ID not found"
+// @Failure 422 {object} web.Response  "Json Parse error"
+// @Router /products/{id} [put]
 func (c *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -139,17 +144,20 @@ func (c *Product) Update() gin.HandlerFunc {
 		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, p, ""))
  }}
  
-// Método UpdateNameAndPrice
-// UpdateProducts godoc
-// @Summary Update Name and Price of a product 
+// UpdateNameAndPrice godoc
+// @Summary Update a product`s name and price based on ID
+// @Description Update a specific product based on the provided JSON
 // @Tags Products
-// @Description Update Name and Price of a product based on id 
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
-// @Param product body request true "Product name and price to update"
-// @Success 200 {object} web.Response
-// @Router /products/:id [patch]
+// @Param product body request true "Product to be updated"
+// @Param id path int true "Product ID"
+// @Success 200 {object} web.Response  "Product Updated"
+// @Failure 400 {object} web.Response  "ID validation error or missing fields"
+// @Failure 404 {object} web.Response  "Product ID not found"
+// @Failure 422 {object} web.Response  "Json Parse error"
+// @Router /products/{id} [patch]
 func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.ParseInt(ctx.Param("id"),10, 0)
@@ -180,19 +188,20 @@ func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 			ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
 		}
-		ctx.JSON(http.StatusOK, p)
+		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, p, ""))
 }}
  
 
-// Método Delete
-// DeleteProducts godoc
-// @Summary Delete a product
+// Delete godoc
+// @Summary Delete a product based on OD
+// @Description Delete a specific product based on ID
 // @Tags Products
-// @Description Delete a products based on id 
-// @Accept  json
-// @Produce  json
 // @Param token header string true "token"
-// @Router /products/:id [delete]
+// @Param id path int true "Product ID"
+// @Success 204 {object} web.Response "No content"
+// @Failure 400 {object} web.Response "ID validation error"
+// @Failure 404 {object} web.Response "Product not found"
+// @Router /products/{id} [delete]
 func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.ParseInt(ctx.Param("id"),10, 0)
@@ -206,7 +215,7 @@ func (c *Product) Delete() gin.HandlerFunc {
 			ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
 			return
 		}
-		ctx.JSON(http.StatusNoContent, gin.H{ "Sucesso!": fmt.Sprintf("O produto %d foi removido", id) })
+		ctx.JSON(http.StatusNoContent, web.NewResponse(http.StatusNoContent, "Produto removido com sucesso", ""))
 	}
 }
  

@@ -24,9 +24,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/products": {
+        "/products/": {
             "get": {
-                "description": "get products",
+                "description": "getAll products",
                 "consumes": [
                     "application/json"
                 ],
@@ -36,7 +36,7 @@ const docTemplate = `{
                 "tags": [
                     "Products"
                 ],
-                "summary": "List products",
+                "summary": "List all products",
                 "parameters": [
                     {
                         "type": "string",
@@ -49,6 +49,12 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "204": {
+                        "description": "Não há produtos cadastrados",
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
@@ -56,7 +62,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "save products",
+                "description": "Create a new product based on the provided JSON",
                 "consumes": [
                     "application/json"
                 ],
@@ -66,7 +72,7 @@ const docTemplate = `{
                 "tags": [
                     "Products"
                 ],
-                "summary": "Save products",
+                "summary": "Save new products",
                 "parameters": [
                     {
                         "type": "string",
@@ -76,7 +82,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Product to save",
+                        "description": "Product to be saves",
                         "name": "product",
                         "in": "body",
                         "required": true,
@@ -86,8 +92,26 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created product",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Missing fields error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Json Parse error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
@@ -95,9 +119,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/:id": {
+        "/products/{id}": {
             "put": {
-                "description": "Updates products based on id",
+                "description": "Update a specific product based on the provided JSON",
                 "consumes": [
                     "application/json"
                 ],
@@ -107,7 +131,7 @@ const docTemplate = `{
                 "tags": [
                     "Products"
                 ],
-                "summary": "Update product",
+                "summary": "Update a product based on ID",
                 "parameters": [
                     {
                         "type": "string",
@@ -117,18 +141,43 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Product to update",
+                        "description": "Product to be updated",
                         "name": "product",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/handler.request"
                         }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Product Updated",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "ID validation error or missing fields",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Product ID not found",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Json Parse error",
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
@@ -136,40 +185,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete a products based on id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
+                "description": "Delete a specific product based on ID",
                 "tags": [
                     "Products"
                 ],
-                "summary": "Delete a product",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {}
-            },
-            "patch": {
-                "description": "Update Name and Price of a product based on id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Update Name and Price of a product",
+                "summary": "Delete a product based on OD",
                 "parameters": [
                     {
                         "type": "string",
@@ -179,18 +199,92 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Product name and price to update",
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "ID validation error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update a specific product based on the provided JSON",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update a product` + "`" + `s name and price based on ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Product to be updated",
                         "name": "product",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/handler.request"
                         }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Product Updated",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "ID validation error or missing fields",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Product ID not found",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Json Parse error",
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
