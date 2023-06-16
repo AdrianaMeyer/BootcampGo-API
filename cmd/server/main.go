@@ -43,6 +43,8 @@ func main() {
 	router := gin.Default()
 	pr := router.Group("/products")
 	{
+		pr.Use(handler.TokenAuthMiddleware())
+		
 		pr.POST("/", product.Save())
 		pr.GET("/", product.GetAll())
 		pr.PUT("/:id", product.Update())

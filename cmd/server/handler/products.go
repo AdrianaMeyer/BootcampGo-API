@@ -5,7 +5,6 @@ import (
 	"time"
 	"strconv"
 	"fmt"
-	"os"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	"github.com/gin-gonic/gin"
@@ -44,12 +43,6 @@ func NewProduct(p products.IService) *Product {
 // @Router /products [get]
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != os.Getenv("TOKEN"){
-			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token Inválido"))
-			return
-		}
-
 		product, err := c.service.GetAll()
 		if err != nil {
 			ctx.JSON(http.StatusNoContent, web.NewResponse(http.StatusNoContent, nil, "Não há produtos cadastrados"))
@@ -74,11 +67,6 @@ func (c *Product) GetAll() gin.HandlerFunc {
 // @Router /products [post]
 func (c *Product) Save() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.Request.Header.Get("token")
-		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token Inválido"))
-			return
-		}
 
 		var req request
 		err := ctx.Bind(&req)
@@ -121,11 +109,6 @@ func (c *Product) Save() gin.HandlerFunc {
 // @Router /products/:id [put]
 func (c *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader("token")
-		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token Inválido"))
-			return
-		}
 
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 0)
 		if err != nil {
@@ -169,11 +152,6 @@ func (c *Product) Update() gin.HandlerFunc {
 // @Router /products/:id [patch]
 func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader("token")
-		if token != os.Getenv("TOKEN") {
-			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token Inválido"))
-			return
-		}
 		id, err := strconv.ParseInt(ctx.Param("id"),10, 0)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "ID Inválido"))
@@ -217,12 +195,6 @@ func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 // @Router /products/:id [delete]
 func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader("token")
-		if token != os.Getenv("TOKEN"){
-			ctx.JSON(http.StatusUnauthorized, web.NewResponse(http.StatusUnauthorized, nil, "Token Inválido"))
-			return
-		}
-
 		id, err := strconv.ParseInt(ctx.Param("id"),10, 0)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, web.NewResponse(http.StatusBadRequest, nil, "ID Inválido"))
