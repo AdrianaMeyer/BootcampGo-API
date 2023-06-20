@@ -5,6 +5,7 @@ import (
 	"time"
 	"strconv"
 	"fmt"
+	"errors"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/domain"
@@ -32,13 +33,19 @@ func NewProduct(p products.IService) *Product {
 // @Param token header string true "token"
 // @Success 200 {object} web.Response
 // @Failure 204 {object} web.Response "Não há produtos cadastrados"
+// @Failure 500 {object} web.Response "Internal Server error"
 // @Router /products/ [get]
 func (c *Product) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		product, err := c.service.GetAll()
 		if err != nil {
-			ctx.JSON(http.StatusNoContent, web.NewResponse(http.StatusNoContent, nil, "Não há produtos cadastrados"))
+			if errors.Is(err, products.NoContent) {
+				ctx.JSON(http.StatusNoContent, web.NewResponse(http.StatusNoContent, nil, err.Error()))
 			return
+			} else {
+				ctx.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, "erro ao conectar com o servidor"))
+				return
+			}
 		}
 
 		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, product, ""))
@@ -103,6 +110,7 @@ func (c *Product) Save() gin.HandlerFunc {
 // @Failure 400 {object} web.Response  "ID validation error or missing fields"
 // @Failure 404 {object} web.Response  "Product ID not found"
 // @Failure 422 {object} web.Response  "Json Parse error"
+// @Failure 500 {object} web.Response "Internal Server error"
 // @Router /products/{id} [put]
 func (c *Product) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -130,8 +138,13 @@ func (c *Product) Update() gin.HandlerFunc {
 
 		p, err := c.service.Update(int(id), req.Name, req.Color, req.Price, req.Count, req.Code, req.Published)
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
-			return
+			if errors.Is(err, products.ErrNotFound) {
+				ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
+				return
+			} else {
+				ctx.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, "erro ao conectar com o servidor"))
+				return
+			}
 		}
 		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, p, ""))
  }}
@@ -149,6 +162,7 @@ func (c *Product) Update() gin.HandlerFunc {
 // @Failure 400 {object} web.Response  "ID validation error or missing fields"
 // @Failure 404 {object} web.Response  "Product ID not found"
 // @Failure 422 {object} web.Response  "Json Parse error"
+// @Failure 500 {object} web.Response "Internal Server error"
 // @Router /products/{id} [patch]
 func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -177,9 +191,15 @@ func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 
 		p, err := c.service.UpdateNameAndPrice(int(id), req.Name, req.Price)
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
-			return
+			if errors.Is(err, products.ErrNotFound) {
+				ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
+				return
+			} else {
+				ctx.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, "erro ao conectar com o servidor"))
+				return
+			}
 		}
+	
 		ctx.JSON(http.StatusOK, web.NewResponse(http.StatusOK, p, ""))
 }}
  
@@ -193,6 +213,7 @@ func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 // @Success 204 {object} web.Response "No content"
 // @Failure 400 {object} web.Response "ID validation error"
 // @Failure 404 {object} web.Response "Product not found"
+// @Failure 500 {object} web.Response "Internal Server error"
 // @Router /products/{id} [delete]
 func (c *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -204,7 +225,16 @@ func (c *Product) Delete() gin.HandlerFunc {
 
 		err = c.service.Delete(int(id))
 		if err != nil {
-			ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
+			if errors.Is(err, products.ErrNotFound) {
+				ctx.JSON(http.StatusNotFound, web.NewResponse(http.StatusNotFound, nil, err.Error()))
+				return
+			} else {
+				ctx.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, "erro ao conectar com o servidor"))
+				return
+			}
+		}
+		if err != nil {
+			
 			return
 		}
 		ctx.JSON(http.StatusNoContent, web.NewResponse(http.StatusNoContent, "Produto removido com sucesso", ""))

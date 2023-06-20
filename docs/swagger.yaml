@@ -63,6 +63,10 @@ paths:
           description: Não há produtos cadastrados
           schema:
             $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/web.Response'
       summary: List all products
       tags:
       - Products
@@ -131,6 +135,10 @@ paths:
           description: Product not found
           schema:
             $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/web.Response'
       summary: Delete a product based on OD
       tags:
       - Products
@@ -174,6 +182,10 @@ paths:
           description: Json Parse error
           schema:
             $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server error
+          schema:
+            $ref: '#/definitions/web.Response'
       summary: Update a product`s name and price based on ID
       tags:
       - Products
@@ -215,6 +227,10 @@ paths:
             $ref: '#/definitions/web.Response'
         "422":
           description: Json Parse error
+          schema:
+            $ref: '#/definitions/web.Response'
+        "500":
+          description: Internal Server error
           schema:
             $ref: '#/definitions/web.Response'
       summary: Update a product based on ID

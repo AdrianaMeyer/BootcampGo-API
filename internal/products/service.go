@@ -1,5 +1,12 @@
 package products
 
+import "errors"
+
+var (
+	ErrNotFound = errors.New("produto não encontrado")
+	NoContent = errors.New("não há produtos cadastrados")
+)
+
 
 type IService interface {
 	GetAll() ([]Product, error)
@@ -24,6 +31,10 @@ func (s *service) GetAll() ([]Product, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	if len(products) == 0 {
+		return nil, NoContent
+	} 
 
 	return products, nil
 }

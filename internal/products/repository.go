@@ -1,7 +1,6 @@
 package products
 
 import (
-	"fmt"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/pkg/store"
 )
@@ -68,12 +67,15 @@ func (r *repository) LastID() (int, error) {
 func (r *repository) Save(id int, name string, color string, price float64, count int, code string, published bool, date string) (Product, error) {
 	
 	var products []Product
-	r.db.Read(&products)
+	err := r.db.Read(&products)
+	if err != nil {
+		return Product{}, err
+	}
 
 	p := Product{id, name, color, price, count, code, published, date}
 	products = append(products, p)
 
-	err := r.db.Write(products)
+	err = r.db.Write(products)
 	if err != nil {
 		return Product{}, err
 	}
@@ -85,7 +87,10 @@ func (r *repository) Save(id int, name string, color string, price float64, coun
 func (r *repository) Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error) {
 
 	var products []Product
-	r.db.Read(&products)
+	err := r.db.Read(&products)
+	if err != nil {
+		return Product{}, err
+	}
 
 	p := Product{Name: name, Color: color, Price: price, Count: count, Code: code, Published: published}
 	updated := false
@@ -106,7 +111,7 @@ func (r *repository) Update(id int, name string, color string, price float64, co
 	}
 	
 	if !updated {
-		return Product{}, fmt.Errorf("Produto %d não encontrado", id)
+		return Product{}, ErrNotFound 
 	}
 
 	return p, nil
@@ -115,7 +120,10 @@ func (r *repository) Update(id int, name string, color string, price float64, co
 
 func (r *repository) UpdateNameAndPrice(id int, name string, price float64) (Product, error) {
 	var products []Product
-	r.db.Read(&products)
+	err := r.db.Read(&products)
+	if err != nil {
+		return Product{}, err
+	}
 
 	var p Product
 	updated := false
@@ -134,7 +142,7 @@ func (r *repository) UpdateNameAndPrice(id int, name string, price float64) (Pro
 		}
 	}
 	if !updated {
-		return Product{}, fmt.Errorf("Produto %d não encontrado", id)
+		return Product{}, ErrNotFound 
 	}
 	return p, nil
  }
@@ -142,7 +150,10 @@ func (r *repository) UpdateNameAndPrice(id int, name string, price float64) (Pro
 
  func (r *repository) Delete(id int) error {
 	var products []Product
-	r.db.Read(&products)
+	err := r.db.Read(&products)
+	if err != nil {
+		return err
+	}
 
 	deleted := false
 	var index int
@@ -161,7 +172,7 @@ func (r *repository) UpdateNameAndPrice(id int, name string, price float64) (Pro
 	}
 	
 	if !deleted {
-		return fmt.Errorf("Produto %d nao encontrado", id)
+		return ErrNotFound 
 	}
 	
 	return nil

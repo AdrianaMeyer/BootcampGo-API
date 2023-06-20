@@ -40,8 +40,8 @@ func main() {
 	service := products.NewService(repo)
 	product := handler.NewProduct(service)
 
-	router := gin.Default()
-	pr := router.Group("/products")
+	r := gin.Default()
+	pr := r.Group("/products")
 	{
 		pr.Use(handler.TokenAuthMiddleware())
 		
@@ -53,7 +53,11 @@ func main() {
 	}
 
 	docs.SwaggerInfo.Host = os.Getenv("HOST")
-	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.Run()
+	err = r.Run()
+	if err != nil {
+		log.Fatal("Erro ao subir o servidor")
+	}
+	
 }

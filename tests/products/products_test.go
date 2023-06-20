@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 	"time"
-	"fmt"
+	"errors"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	tests_mocks "github.com/AdrianaMeyer/BootcampGo-API/tests/mocks"
@@ -152,7 +152,7 @@ func TestUpdateNameAndPriceError(t *testing.T) {
 		updatedProduct.Price,
 	)
 
-	expectedError := fmt.Errorf("Produto %d não encontrado", updatedProduct.ID)
+	expectedError := errors.New("produto não encontrado")
 
 	assert.Equal(t, expectedError, err)
 	assert.Error(t, expectedError)
@@ -220,7 +220,7 @@ func TestUpdateError(t *testing.T) {
 		updatedProduct.Published,
 	)
 
-	expectedError := fmt.Errorf("Produto %d não encontrado", updatedProduct.ID)
+	expectedError := errors.New("produto não encontrado")
 
 	assert.Equal(t, expectedError, err)
 	assert.Error(t, expectedError)
@@ -249,7 +249,7 @@ func TestDeleteError(t *testing.T) {
 	MyService := products.NewService(MyRepoMock)
 	result := MyService.Delete(IDNotExist)
 
-	expectedError := fmt.Errorf("Produto %d nao encontrado", IDNotExist)
+	expectedError := errors.New("produto não encontrado")
 
 	assert.Equal(t, expectedError, result)
 	assert.True(t, MyMock.ReadWasCalled)

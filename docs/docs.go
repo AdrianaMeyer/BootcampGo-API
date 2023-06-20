@@ -58,6 +58,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
                     }
                 }
             },
@@ -181,6 +187,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
                     }
                 }
             },
@@ -221,6 +233,12 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
@@ -285,6 +303,12 @@ const docTemplate = `{
                     },
                     "422": {
                         "description": "Json Parse error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }

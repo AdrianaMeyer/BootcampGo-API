@@ -49,6 +49,12 @@
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
                     }
                 }
             },
@@ -172,6 +178,12 @@
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
                     }
                 }
             },
@@ -212,6 +224,12 @@
                     },
                     "404": {
                         "description": "Product not found",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
@@ -276,6 +294,12 @@
                     },
                     "422": {
                         "description": "Json Parse error",
+                        "schema": {
+                            "$ref": "#/definitions/web.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server error",
                         "schema": {
                             "$ref": "#/definitions/web.Response"
                         }
