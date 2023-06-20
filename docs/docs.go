@@ -87,7 +87,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.request"
+                            "$ref": "#/definitions/domain.Request"
                         }
                     }
                 ],
@@ -146,7 +146,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.request"
+                            "$ref": "#/definitions/domain.Request"
                         }
                     },
                     {
@@ -253,7 +253,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.request"
+                            "$ref": "#/definitions/domain.RequestUpdateNameAndPrice"
                         }
                     },
                     {
@@ -294,7 +294,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handler.request": {
+        "domain.Request": {
             "type": "object",
             "properties": {
                 "code": {
@@ -306,9 +306,6 @@ const docTemplate = `{
                 "count": {
                     "type": "integer"
                 },
-                "date": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -317,6 +314,17 @@ const docTemplate = `{
                 },
                 "published": {
                     "type": "boolean"
+                }
+            }
+        },
+        "domain.RequestUpdateNameAndPrice": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         },

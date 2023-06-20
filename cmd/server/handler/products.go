@@ -53,7 +53,7 @@ func (c *Product) GetAll() gin.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
-// @Param product body request true "Product to be saves"
+// @Param product body domain.Request true "Product to be saves"
 // @Success 201 {object} web.Response "Created product"
 // @Failure 400 {object} web.Response "Missing fields error"
 // @Failure 422 {object} web.Response "Json Parse error"
@@ -97,7 +97,7 @@ func (c *Product) Save() gin.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
-// @Param product body request true "Product to be updated"
+// @Param product body domain.Request true "Product to be updated"
 // @Param id path int true "Product ID"
 // @Success 200 {object} web.Response "Product Updated"
 // @Failure 400 {object} web.Response  "ID validation error or missing fields"
@@ -143,7 +143,7 @@ func (c *Product) Update() gin.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param token header string true "token"
-// @Param product body request true "Product to be updated"
+// @Param product body domain.RequestUpdateNameAndPrice true "Product to be updated"
 // @Param id path int true "Product ID"
 // @Success 200 {object} web.Response  "Product Updated"
 // @Failure 400 {object} web.Response  "ID validation error or missing fields"

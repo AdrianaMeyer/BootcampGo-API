@@ -1,5 +1,5 @@
 definitions:
-  handler.request:
+  domain.Request:
     properties:
       code:
         type: string
@@ -7,14 +7,19 @@ definitions:
         type: string
       count:
         type: integer
-      date:
-        type: string
       name:
         type: string
       price:
         type: number
       published:
         type: boolean
+    type: object
+  domain.RequestUpdateNameAndPrice:
+    properties:
+      name:
+        type: string
+      price:
+        type: number
     type: object
   web.Response:
     properties:
@@ -76,7 +81,7 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/handler.request'
+          $ref: '#/definitions/domain.Request'
       produces:
       - application/json
       responses:
@@ -144,7 +149,7 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/handler.request'
+          $ref: '#/definitions/domain.RequestUpdateNameAndPrice'
       - description: Product ID
         in: path
         name: id
@@ -187,7 +192,7 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/handler.request'
+          $ref: '#/definitions/domain.Request'
       - description: Product ID
         in: path
         name: id
