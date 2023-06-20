@@ -120,7 +120,7 @@ func TestUpdateNameAndPrice(t *testing.T) {
 		Price: 30.9,
 	}
 
-	MyMock := tests_mocks.MockProductsUpdate{}
+	MyMock := tests_mocks.MockProductsUpdateNamePrice{}
 	MyRepoMock := products.NewRepository(&MyMock)
 	MyService := products.NewService(MyRepoMock)
 	result, err := MyService.UpdateNameAndPrice(
@@ -143,7 +143,7 @@ func TestUpdateNameAndPriceError(t *testing.T) {
 		Price: 30.9,
 	}
 
-	MyMock := tests_mocks.MockProductsUpdate{}
+	MyMock := tests_mocks.MockProductsUpdateNamePrice{}
 	MyRepoMock := products.NewRepository(&MyMock)
 	MyService := products.NewService(MyRepoMock)
 	_, err := MyService.UpdateNameAndPrice(
@@ -152,7 +152,75 @@ func TestUpdateNameAndPriceError(t *testing.T) {
 		updatedProduct.Price,
 	)
 
-	expectedError := fmt.Errorf("Produto %d no encontrado", updatedProduct.ID)
+	expectedError := fmt.Errorf("Produto %d não encontrado", updatedProduct.ID)
+
+	assert.Equal(t, expectedError, err)
+	assert.Error(t, expectedError)
+	assert.True(t, MyMock.ReadWasCalled)
+}
+
+func TestUpdate(t *testing.T) {
+
+	updatedProduct := products.Product{
+		ID: 8,
+		Name: "Updated",
+		Color: "Amarelo",
+		Price: 34.80,
+		Count: 45,
+		Code: "CCC6548",
+		Published: false,
+	}
+
+	MyMock := tests_mocks.MockProductsUpdate{}
+	MyRepoMock := products.NewRepository(&MyMock)
+	MyService := products.NewService(MyRepoMock)
+	result, err := MyService.Update(
+		updatedProduct.ID,
+		updatedProduct.Name,
+		updatedProduct.Color,
+		updatedProduct.Price,
+		updatedProduct.Count,
+		updatedProduct.Code,
+		updatedProduct.Published,
+	)
+
+	assert.Nil(t, err)
+	assert.True(t, result.ID == updatedProduct.ID)
+	assert.True(t, result.Name == updatedProduct.Name)
+	assert.True(t, result.Color == updatedProduct.Color)
+	assert.True(t, result.Price == updatedProduct.Price)
+	assert.True(t, result.Count == updatedProduct.Count)
+	assert.True(t, result.Code == updatedProduct.Code)
+	assert.True(t, result.Published == updatedProduct.Published)
+	assert.True(t, MyMock.ReadWasCalled)
+}
+
+func TestUpdateError(t *testing.T) {
+
+	updatedProduct := products.Product{
+		ID: 99,
+		Name: "Updated",
+		Color: "Amarelo",
+		Price: 34.80,
+		Count: 45,
+		Code: "CCC6548",
+		Published: false,
+	}
+
+	MyMock := tests_mocks.MockProductsUpdate{}
+	MyRepoMock := products.NewRepository(&MyMock)
+	MyService := products.NewService(MyRepoMock)
+	_, err := MyService.Update(
+		updatedProduct.ID,
+		updatedProduct.Name,
+		updatedProduct.Color,
+		updatedProduct.Price,
+		updatedProduct.Count,
+		updatedProduct.Code,
+		updatedProduct.Published,
+	)
+
+	expectedError := fmt.Errorf("Produto %d não encontrado", updatedProduct.ID)
 
 	assert.Equal(t, expectedError, err)
 	assert.Error(t, expectedError)

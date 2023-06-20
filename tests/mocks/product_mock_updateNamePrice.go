@@ -8,15 +8,15 @@ import (
 )
 
 
-type MockProductsUpdate struct {
+type MockProductsUpdateNamePrice struct {
 	ReadWasCalled bool
 }
 
-func (s *MockProductsUpdate) Write(data interface{}) error {
+func (s *MockProductsUpdateNamePrice) Write(data interface{}) error {
 	return nil
 }
 
-func (s *MockProductsUpdate) Read(data interface{}) error {
+func (s *MockProductsUpdateNamePrice) Read(data interface{}) error {
 	s.ReadWasCalled = true
 
 	fakeDate := time.Now()
@@ -24,8 +24,8 @@ func (s *MockProductsUpdate) Read(data interface{}) error {
 
 	products := []products.Product{
 		{
-			ID: 8,
-			Name: "NotUpdated",
+			ID: 1,
+			Name: "Before Update",
 			Color: "Preto",
 			Price: 50000.99,
 			Count: 30,

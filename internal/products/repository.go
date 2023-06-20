@@ -134,7 +134,7 @@ func (r *repository) UpdateNameAndPrice(id int, name string, price float64) (Pro
 		}
 	}
 	if !updated {
-		return Product{}, fmt.Errorf("Produto %d no encontrado", id)
+		return Product{}, fmt.Errorf("Produto %d não encontrado", id)
 	}
 	return p, nil
  }
