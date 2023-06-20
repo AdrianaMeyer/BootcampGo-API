@@ -7,23 +7,10 @@ import (
 	"fmt"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
+	"github.com/AdrianaMeyer/BootcampGo-API/internal/domain"
 	"github.com/gin-gonic/gin"
 	"github.com/AdrianaMeyer/BootcampGo-API/pkg/web"
 )
-
-type request struct {
-	Name 		string 		`json:"name"`
-	Color 		string 		`json:"color"`
-	Price 		float64 	`json:"price"`
-	Count 		int 		`json:"count"`
-	Code 		string 		`json:"code"`
-	Published 	bool 		`json:"published"`
-}
-
-type requestUpdateNameAndPrice struct {
-	Name 		string 		`json:"name"`
-	Price 		float64 	`json:"price"`
-}
 
 type Product struct {
 	service products.IService
@@ -75,7 +62,7 @@ func (c *Product) GetAll() gin.HandlerFunc {
 func (c *Product) Save() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var req request
+		var req domain.Request
 		err := ctx.Bind(&req)
 		if err != nil {
 			ctx.JSON(http.StatusUnprocessableEntity, web.NewResponse(http.StatusUnprocessableEntity, nil, err.Error()))
@@ -126,7 +113,7 @@ func (c *Product) Update() gin.HandlerFunc {
 			return
 		}
 
-		var req request
+		var req domain.Request
 		err = ctx.ShouldBindJSON(&req);
 
 		if  err != nil {
@@ -171,7 +158,7 @@ func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 			return
 		}
 
-		var req requestUpdateNameAndPrice
+		var req domain.RequestUpdateNameAndPrice
 		err = ctx.ShouldBindJSON(&req)
 		if err != nil {
 			ctx.JSON(http.StatusUnprocessableEntity, web.NewResponse(http.StatusUnprocessableEntity, nil, err.Error()))
@@ -224,7 +211,7 @@ func (c *Product) Delete() gin.HandlerFunc {
 	}
 }
  
-func validateFields(req request) []string {
+func validateFields(req domain.Request) []string {
 
 	emptyfields := []string{}
 
