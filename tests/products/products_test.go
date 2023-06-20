@@ -3,6 +3,7 @@ package tests
 import (
 	"testing"
 	"time"
+	"fmt"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	tests_mocks "github.com/AdrianaMeyer/BootcampGo-API/tests/mocks"
@@ -109,4 +110,51 @@ func TestSaveError(t *testing.T) {
 	)
 	assert.NotNil(t, err)
 	assert.Equal(t, err.Error(), expectedErrorMessage)
+}
+
+func TestUpdateNameAndPrice(t *testing.T) {
+
+	updatedProduct := products.Product{
+		ID: 1,
+		Name: "After Update",
+		Price: 30.9,
+	}
+
+	MyMock := tests_mocks.MockProductsUpdate{}
+	MyRepoMock := products.NewRepository(&MyMock)
+	MyService := products.NewService(MyRepoMock)
+	result, err := MyService.UpdateNameAndPrice(
+		updatedProduct.ID,
+		updatedProduct.Name,
+		updatedProduct.Price,
+	)
+
+	assert.Nil(t, err)
+	assert.True(t, result.Name == "After Update")
+	assert.True(t, result.Price == 30.9)
+	assert.True(t, MyMock.ReadWasCalled)
+}
+
+func TestUpdateNameAndPriceError(t *testing.T) {
+
+	updatedProduct := products.Product{
+		ID: 99,
+		Name: "After Update",
+		Price: 30.9,
+	}
+
+	MyMock := tests_mocks.MockProductsUpdate{}
+	MyRepoMock := products.NewRepository(&MyMock)
+	MyService := products.NewService(MyRepoMock)
+	_, err := MyService.UpdateNameAndPrice(
+		updatedProduct.ID,
+		updatedProduct.Name,
+		updatedProduct.Price,
+	)
+
+	expectedError := fmt.Errorf("Produto %d no encontrado", updatedProduct.ID)
+
+	assert.Equal(t, expectedError, err)
+	assert.Error(t, expectedError)
+	assert.True(t, MyMock.ReadWasCalled)
 }
