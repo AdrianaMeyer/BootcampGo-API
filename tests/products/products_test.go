@@ -226,3 +226,31 @@ func TestUpdateError(t *testing.T) {
 	assert.Error(t, expectedError)
 	assert.True(t, MyMock.ReadWasCalled)
 }
+
+func TestDelete(t *testing.T) {
+
+	IDExists := 1
+
+	MyMock := tests_mocks.MockProductsDelete{}
+	MyRepoMock := products.NewRepository(&MyMock)
+	MyService := products.NewService(MyRepoMock)
+	result := MyService.Delete(IDExists)
+
+	assert.Nil(t, result)
+	assert.True(t, MyMock.ReadWasCalled)
+}
+
+func TestDeleteError(t *testing.T) {
+
+	IDNotExist := 99
+
+	MyMock := tests_mocks.MockProductsDelete{}
+	MyRepoMock := products.NewRepository(&MyMock)
+	MyService := products.NewService(MyRepoMock)
+	result := MyService.Delete(IDNotExist)
+
+	expectedError := fmt.Errorf("Produto %d nao encontrado", IDNotExist)
+
+	assert.Equal(t, expectedError, result)
+	assert.True(t, MyMock.ReadWasCalled)
+}
