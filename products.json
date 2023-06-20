@@ -7,17 +7,17 @@
     "count": 40,
     "code": "CCC6543",
     "published": true,
-    "date": "2023-06-08T23:27:08.492102-03:00"
+    "date": "08/06/2023"
   },
   {
     "id": 2,
-    "name": "Celular",
+    "name": "Celular Samsung",
     "color": "Azul",
-    "price": 2500.9,
+    "price": 6450,
     "count": 40,
     "code": "CCC6542",
     "published": true,
-    "date": "2023-06-08T23:30:12.859257-03:00"
+    "date": "08/06/2023"
   },
   {
     "id": 3,
@@ -27,17 +27,17 @@
     "count": 230,
     "code": "BBB4024",
     "published": true,
-    "date": "2023-06-08T23:46:22.473059-03:00"
+    "date": "10/06/2023"
   },
   {
     "id": 4,
-    "name": "Chinelo",
-    "color": "Branco",
-    "price": 45,
-    "count": 200,
-    "code": "CCC6548",
+    "name": "Cinelo Havaianas",
+    "color": "Rosa",
+    "price": 30.98,
+    "count": 340,
+    "code": "BBB4024",
     "published": true,
-    "date": "2023-06-08T23:56:30.188387-03:00"
+    "date": "15/06/2023"
   },
   {
     "id": 5,
@@ -47,16 +47,26 @@
     "count": 5,
     "code": "CCC7654",
     "published": true,
-    "date": "2023-06-11T19:46:40.599793-03:00"
+    "date": "16/06/2023"
   },
   {
     "id": 6,
-    "name": "Livro",
-    "color": "Prata",
-    "price": 85,
-    "count": 5,
-    "code": "CCC7654",
+    "name": "Livro Harry Potter",
+    "color": "colorido",
+    "price": 85.9,
+    "count": 15,
+    "code": "LLL7689",
     "published": true,
-    "date": "2023-06-16T17:07:11.544581-03:00"
+    "date": "18/06/2023"
+  },
+  {
+    "id": 7,
+    "name": "Playstation",
+    "color": "Branco",
+    "price": 5000,
+    "count": 3,
+    "code": "PPP7654",
+    "published": true,
+    "date": "20/06/2023"
   }
 ]

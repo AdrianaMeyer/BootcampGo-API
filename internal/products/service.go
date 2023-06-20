@@ -1,12 +1,9 @@
 package products
 
-import (
-	"time"
-)
 
 type IService interface {
 	GetAll() ([]Product, error)
-	Save(name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
+	Save(name string, color string, price float64, count int, code string, published bool, date string) (Product, error)
 	Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error)
 	UpdateNameAndPrice(id int, name string, price float64) (Product, error)
 	Delete(id int) error
@@ -31,7 +28,7 @@ func (s *service) GetAll() ([]Product, error) {
 	return products, nil
 }
 
-func (s *service) Save(name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error) {
+func (s *service) Save(name string, color string, price float64, count int, code string, published bool, date string) (Product, error) {
 
 	lastID, err := s.repository.LastID()
 	if err != nil {

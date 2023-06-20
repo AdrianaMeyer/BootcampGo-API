@@ -20,6 +20,11 @@ type request struct {
 	Published 	bool 		`json:"published"`
 }
 
+type requestUpdateNameAndPrice struct {
+	Name 		string 		`json:"name"`
+	Price 		float64 	`json:"price"`
+}
+
 type Product struct {
 	service products.IService
 
@@ -84,9 +89,10 @@ func (c *Product) Save() gin.HandlerFunc {
 			return
 		}
 		
-		date := time.Now()
+		Date := time.Now()
+		DateFormat := Date.Format("02/01/2006")
 
-		product, err := c.service.Save(req.Name, req.Color, req.Price, req.Count, req.Code, req.Published, date)
+		product, err := c.service.Save(req.Name, req.Color, req.Price, req.Count, req.Code, req.Published, DateFormat)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, web.NewResponse(http.StatusInternalServerError, nil, err.Error()))
 			return	
@@ -165,7 +171,7 @@ func (c *Product) UpdateNameAndPrice() gin.HandlerFunc {
 			return
 		}
 
-		var req request
+		var req requestUpdateNameAndPrice
 		err = ctx.ShouldBindJSON(&req)
 		if err != nil {
 			ctx.JSON(http.StatusUnprocessableEntity, web.NewResponse(http.StatusUnprocessableEntity, nil, err.Error()))

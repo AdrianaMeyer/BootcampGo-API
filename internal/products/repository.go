@@ -1,7 +1,6 @@
 package products
 
 import (
-	"time"
 	"fmt"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/pkg/store"
@@ -15,12 +14,12 @@ type Product struct {
 	Count 		int 		`json:"count"`
 	Code 		string 		`json:"code"`
 	Published 	bool 		`json:"published"`
-	Date 		time.Time 	`json:"date"`
+	Date 		string		`json:"date"`
 }
 
 type IRepository interface {
 	GetAll() ([]Product, error)
-	Save(id int, name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error)
+	Save(id int, name string, color string, price float64, count int, code string, published bool, date string) (Product, error)
 	LastID() (int, error)
 	Update(id int, name string, color string, price float64, count int, code string, published bool) (Product, error)
 	UpdateNameAndPrice(id int, name string, price float64) (Product, error)
@@ -66,7 +65,7 @@ func (r *repository) LastID() (int, error) {
 
 }
 
-func (r *repository) Save(id int, name string, color string, price float64, count int, code string, published bool, date time.Time) (Product, error) {
+func (r *repository) Save(id int, name string, color string, price float64, count int, code string, published bool, date string) (Product, error) {
 	
 	var products []Product
 	r.db.Read(&products)
