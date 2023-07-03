@@ -1,4 +1,4 @@
-package tests_mocks
+package mocks
 
 import (
 	"encoding/json"

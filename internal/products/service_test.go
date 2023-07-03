@@ -1,4 +1,4 @@
-package tests
+package products_test
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 	"errors"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
-	tests_mocks "github.com/AdrianaMeyer/BootcampGo-API/tests/mocks"
+	"github.com/AdrianaMeyer/BootcampGo-API/internal/products/mocks"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -37,7 +37,7 @@ func TestGetAll(t *testing.T) {
 		},
 	}
 
-	MyStub := tests_mocks.StubProducts{}
+	MyStub := mocks.StubProducts{}
 	MyRepoMock := products.NewRepository(&MyStub)
 	MyService := products.NewService(MyRepoMock)
 	result, err := MyService.GetAll()
@@ -48,7 +48,7 @@ func TestGetAll(t *testing.T) {
 }
 
 func TestGetAllError(t *testing.T) {
-	MyStub := tests_mocks.StubProductsError{}
+	MyStub := mocks.StubProductsError{}
 	MyRepoMock := products.NewRepository(&MyStub)
 	MyService := products.NewService(MyRepoMock)
 	result, err := MyService.GetAll()
@@ -75,7 +75,7 @@ func TestSave(t *testing.T) {
 		Date: fakeDateFormat,
 	}
 
-	MyStub := tests_mocks.StubProductsSave{}
+	MyStub := mocks.StubProductsSave{}
 	MyRepoMock := products.NewRepository(&MyStub)
 	MyService := products.NewService(MyRepoMock)
 	result, err := MyService.Save(
@@ -96,7 +96,7 @@ func TestSaveError(t *testing.T) {
 	testProduct := products.Product{}
 	expectedErrorMessage := "JSON unexpected character"
 
-	MyStub := tests_mocks.StubProductsSaveError{}
+	MyStub := mocks.StubProductsSaveError{}
 	MyRepoMock := products.NewRepository(&MyStub)
 	MyService := products.NewService(MyRepoMock)
 	_, err := MyService.Save(
@@ -120,7 +120,7 @@ func TestUpdateNameAndPrice(t *testing.T) {
 		Price: 30.9,
 	}
 
-	MyMock := tests_mocks.MockProductsUpdateNamePrice{}
+	MyMock := mocks.MockProductsUpdateNamePrice{}
 	MyRepoMock := products.NewRepository(&MyMock)
 	MyService := products.NewService(MyRepoMock)
 	result, err := MyService.UpdateNameAndPrice(
@@ -143,7 +143,7 @@ func TestUpdateNameAndPriceError(t *testing.T) {
 		Price: 30.9,
 	}
 
-	MyMock := tests_mocks.MockProductsUpdateNamePrice{}
+	MyMock := mocks.MockProductsUpdateNamePrice{}
 	MyRepoMock := products.NewRepository(&MyMock)
 	MyService := products.NewService(MyRepoMock)
 	_, err := MyService.UpdateNameAndPrice(
@@ -171,7 +171,7 @@ func TestUpdate(t *testing.T) {
 		Published: false,
 	}
 
-	MyMock := tests_mocks.MockProductsUpdate{}
+	MyMock := mocks.MockProductsUpdate{}
 	MyRepoMock := products.NewRepository(&MyMock)
 	MyService := products.NewService(MyRepoMock)
 	result, err := MyService.Update(
@@ -207,7 +207,7 @@ func TestUpdateError(t *testing.T) {
 		Published: false,
 	}
 
-	MyMock := tests_mocks.MockProductsUpdate{}
+	MyMock := mocks.MockProductsUpdate{}
 	MyRepoMock := products.NewRepository(&MyMock)
 	MyService := products.NewService(MyRepoMock)
 	_, err := MyService.Update(
@@ -231,7 +231,7 @@ func TestDelete(t *testing.T) {
 
 	IDExists := 1
 
-	MyMock := tests_mocks.MockProductsDelete{}
+	MyMock := mocks.MockProductsDelete{}
 	MyRepoMock := products.NewRepository(&MyMock)
 	MyService := products.NewService(MyRepoMock)
 	result := MyService.Delete(IDExists)
@@ -244,7 +244,7 @@ func TestDeleteError(t *testing.T) {
 
 	IDNotExist := 99
 
-	MyMock := tests_mocks.MockProductsDelete{}
+	MyMock := mocks.MockProductsDelete{}
 	MyRepoMock := products.NewRepository(&MyMock)
 	MyService := products.NewService(MyRepoMock)
 	result := MyService.Delete(IDNotExist)
