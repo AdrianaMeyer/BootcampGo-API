@@ -1,11 +1,11 @@
 [
   {
     "id": 1,
-    "name": "Estojo",
+    "name": "Lapiseira",
     "color": "Preto",
-    "price": 30.9,
-    "count": 40,
-    "code": "CCC6543",
+    "price": 4.5,
+    "count": 50,
+    "code": "LLL6543",
     "published": true,
     "date": "08/06/2023"
   },

@@ -1,19 +1,18 @@
 package test
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
-	"testing"
-	"bytes"
 	"net/http/httptest"
 	"os"
+	"testing"
 
-	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	"github.com/AdrianaMeyer/BootcampGo-API/cmd/server/handler"
+	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	"github.com/AdrianaMeyer/BootcampGo-API/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
-	
 )
 
 type Response struct {
@@ -32,6 +31,8 @@ func createServer() *gin.Engine {
 	pr := r.Group("/products")
 	pr.POST("/", p.Save())
 	pr.GET("/", p.GetAll())
+	pr.PUT("/:id", p.Update())
+	pr.DELETE("/:id", p.Delete())
 	return r
 }
 
@@ -80,10 +81,34 @@ func Test_SaveProduct_InvalidBody(t *testing.T) {
 		"price": ,
 		"count": 0,
 		"code": "",
-		"published": true,
-		"date": "03/07/2023"
+		"published": true
 	}`)
 
 	r.ServeHTTP(response, request)
 	assert.Equal(t, 400, response.Code)
+}
+
+func Test_UpdateProduct_OK(t *testing.T) {
+	r := createServer()
+	uri := "/products/1" 
+	request, response := createRequestTest(http.MethodPut, uri , `{
+			"name": "Lapiseira",
+			"color": "Preto",
+			"price": 4.50,
+			"count": 50,
+			"code": "LLL6543",
+			"published": true
+	}`)
+
+	r.ServeHTTP(response, request)
+	assert.Equal(t, 200, response.Code)
+}
+
+func Test_DeleteProduct_OK(t *testing.T) {
+	r := createServer()
+	uri := "/products/8" 
+	request, response := createRequestTest(http.MethodDelete, uri, "")
+
+	r.ServeHTTP(response, request)
+	assert.Equal(t, 204, response.Code)
 }
