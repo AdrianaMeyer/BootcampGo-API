@@ -5,15 +5,14 @@ import (
 	"os"
 
 	"github.com/AdrianaMeyer/BootcampGo-API/cmd/server/handler"
+	"github.com/AdrianaMeyer/BootcampGo-API/config"
+	"github.com/AdrianaMeyer/BootcampGo-API/docs"
 	"github.com/AdrianaMeyer/BootcampGo-API/internal/products"
 	"github.com/AdrianaMeyer/BootcampGo-API/pkg/store"
-	"github.com/AdrianaMeyer/BootcampGo-API/docs"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
-
 
 // @title Bootcamp Go - API
 // @version 1.0
@@ -26,10 +25,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
-	err := godotenv.Load("../../.env")
-	if err != nil {
-	  log.Fatal("Erro ao carregar o arquivo .env")
-	}
+	config.InitConfig()
 
 	store := store.Factory("file", "../../products.json")
 	if store == nil {
@@ -55,9 +51,6 @@ func main() {
 	docs.SwaggerInfo.Host = os.Getenv("HOST")
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	err = r.Run()
-	if err != nil {
-		log.Fatal("Erro ao subir o servidor")
-	}
+	r.Run()
 	
 }
